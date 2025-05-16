@@ -1,26 +1,376 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.75rem;
+  /* Màu sắc chủ đề sáng - tông xanh biển dịu nhẹ */
+  --background: oklch(0.99 0.01 210);
+  --foreground: oklch(0.25 0.02 210);
+  --card: oklch(1 0.02 210);
+  --card-foreground: oklch(0.2 0.02 210);
+  --popover: oklch(1 0.02 210);
+  --popover-foreground: oklch(0.2 0.02 210);
+  --primary: oklch(0.55 0.12 210); /* Xanh dương biển nhẹ */
+  --primary-foreground: oklch(0.98 0.01 210);
+  --secondary: oklch(0.96 0.03 200);
+  --secondary-foreground: oklch(0.25 0.02 210);
+  --muted: oklch(0.97 0.02 205);
+  --muted-foreground: oklch(0.55 0.03 210);
+  --accent: oklch(0.85 0.08 195); /* Xanh ngọc nhạt */
+  --accent-foreground: oklch(0.2 0.02 210);
+  --destructive: oklch(0.65 0.2 25);
+  --border: oklch(0.9 0.04 205); /* Viền xanh biển nhẹ */
+  --input: oklch(0.95 0.02 210);
+  --ring: oklch(0.55 0.08 210); /* Xanh dương biển nhẹ */
+
+  /* Màu biểu đồ - dải màu xanh dương đến xanh ngọc */
+  --chart-1: oklch(0.65 0.12 210); /* Xanh dương */
+  --chart-2: oklch(0.68 0.1 200); /* Xanh biển */
+  --chart-3: oklch(0.7 0.12 190); /* Xanh ngọc */
+  --chart-4: oklch(0.63 0.08 220); /* Xanh tím nhạt */
+  --chart-5: oklch(0.72 0.1 180); /* Xanh lá biển */
+
+  /* Màu thanh bên */
+  --sidebar: oklch(0.97 0.03 205);
+  --sidebar-foreground: oklch(0.2 0.02 210);
+  --sidebar-primary: oklch(0.55 0.12 210);
+  --sidebar-primary-foreground: oklch(0.98 0.01 210);
+  --sidebar-accent: oklch(0.85 0.08 195);
+  --sidebar-accent-foreground: oklch(0.2 0.02 210);
+  --sidebar-border: oklch(0.9 0.04 205);
+  --sidebar-ring: oklch(0.55 0.08 210);
+}
+
+.dark {
+  /* Màu sắc chủ đề tối - tông xanh biển sâu */
+  --background: oklch(0.15 0.02 220);
+  --foreground: oklch(0.95 0.02 195);
+  --card: oklch(0.18 0.03 215);
+  --card-foreground: oklch(0.95 0.02 195);
+  --popover: oklch(0.18 0.03 215);
+  --popover-foreground: oklch(0.95 0.02 195);
+  --primary: oklch(0.68 0.12 200); /* Xanh dương biển sáng */
+  --primary-foreground: oklch(0.15 0.02 220);
+  --secondary: oklch(0.25 0.03 215);
+  --secondary-foreground: oklch(0.95 0.02 195);
+  --muted: oklch(0.28 0.02 210);
+  --muted-foreground: oklch(0.75 0.03 200);
+  --accent: oklch(0.6 0.1 190); /* Xanh ngọc */
+  --accent-foreground: oklch(0.95 0.02 195);
+  --destructive: oklch(0.7 0.2 25);
+  --border: oklch(0.28 0.04 215); /* Viền xanh biển sâu */
+  --input: oklch(0.22 0.03 220);
+  --ring: oklch(0.65 0.12 200); /* Xanh dương biển */
+
+  /* Màu biểu đồ - phiên bản đậm hơn */
+  --chart-1: oklch(0.68 0.15 200); /* Xanh dương biển */
+  --chart-2: oklch(0.62 0.12 190); /* Xanh ngọc */
+  --chart-3: oklch(0.7 0.15 180); /* Xanh lá biển */
+  --chart-4: oklch(0.65 0.12 220); /* Xanh tím */
+  --chart-5: oklch(0.67 0.15 170); /* Xanh lá nhạt */
+
+  /* Màu thanh bên */
+  --sidebar: oklch(0.18 0.03 220);
+  --sidebar-foreground: oklch(0.95 0.02 195);
+  --sidebar-primary: oklch(0.68 0.12 200);
+  --sidebar-primary-foreground: oklch(0.15 0.02 220);
+  --sidebar-accent: oklch(0.6 0.1 190);
+  --sidebar-accent-foreground: oklch(0.95 0.02 195);
+  --sidebar-border: oklch(0.28 0.04 215);
+  --sidebar-ring: oklch(0.65 0.12 200);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(
+    --font-nunito-vietnamese,
+    var(--font-plus-jakarta-sans),
+    var(--font-geist-sans)
+  );
+  --font-mono: var(--font-jetbrains-mono, var(--font-geist-mono));
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    @apply bg-background text-foreground font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Hiệu ứng Animation */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+.pulse-gentle {
+  animation: pulseGentle 2s infinite;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Các lớp staggered animation khi load trang */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+.stagger-5 {
+  animation-delay: 0.5s;
+}
+
+/* Hiệu ứng cho các section */
+.section-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.section-slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: sectionSlideUp 0.8s ease-out forwards;
+}
+
+/* Định nghĩa keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulseGentle {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes sectionSlideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Thêm animation cho scroll reveal */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tiện ích bổ sung */
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(30, 30, 30, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Các lớp giao diện cho tiếng Việt */
+.text-vn-error {
+  @apply text-destructive font-medium text-sm;
+}
+
+.text-vn-info {
+  @apply text-primary font-medium text-sm;
+}
+
+.text-vn-success {
+  @apply text-green-600 dark:text-green-400 font-medium text-sm;
+}
+
+.text-vn-warning {
+  @apply text-amber-600 dark:text-amber-400 font-medium text-sm;
+}
+
+/* Tối ưu cho văn bản tiếng Việt */
+.text-vn {
+  letter-spacing: -0.01em;
+  word-spacing: 0.05em;
+}
+
+.text-vn-heading {
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Hiệu ứng nút nhấn */
+.btn-hover-effect {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .btn-hover-effect:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
 }
