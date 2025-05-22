@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -6,8 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Newspaper,
-  Eye,
-  MessageSquare,
   Check,
   Loader2,
   Mail,
@@ -18,13 +17,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Pagination,
@@ -35,7 +28,15 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 import PostCard from "@//components/layout/PostCard";
 import BackToTop from "@//components/layout/BackToTop";
 import { Post } from "@/types/post";
@@ -48,6 +49,30 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [mounted, setMounted] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
+
+  // Data for statistics chart
+  const statsData = [
+    { name: "Bài viết", value: posts.length, color: "#0ea5e9" },
+    { name: "Lượt xem", value: 10500, color: "#8b5cf6" },
+    { name: "Bình luận", value: 230, color: "#f43f5e" },
+  ];
+
+  // Data for popular topics
+  const topicsData = [
+    { name: "Next.js", count: 12, color: "#000000" },
+    { name: "React", count: 10, color: "#61dafb" },
+    { name: "JS", count: 8, color: "#f7df1e" },
+    { name: "TS", count: 6, color: "#3178c6" },
+    { name: "CSS", count: 5, color: "#264de4" },
+    { name: "Web Dev", count: 4, color: "#4caf50" },
+    { name: "Performance", count: 3, color: "#ff9800" },
+    { name: "Design", count: 2, color: "#e91e63" },
+  ];
+
+  const [activePieIndex, setActivePieIndex] = useState(0);
+  const onPieEnter = (_: any, index: number) => {
+    setActivePieIndex(index);
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -336,97 +361,149 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-1">
-              <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-2">
-                <CardHeader>
-                  <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
-                    Chủ đề phổ biến
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      "Next.js",
-                      "React",
-                      "JavaScript",
-                      "TypeScript",
-                      "CSS",
-                      "Web Dev",
-                      "Performance",
-                      "Design",
-                    ].map((tag, idx) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className={`bg-primary/10 hover:bg-primary text-primary hover:text-white transition-colors duration-200 hover:translate-y-[-2px] scale-in stagger-${
-                          (idx % 5) + 1
-                        }`}
-                        asChild
+            {/* Statistics Chart Card */}
+            <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-2">
+              <CardHeader>
+                <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
+                  Thống kê blog
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={statsData}
+                      margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
+                    >
+                      <Tooltip
+                        formatter={(
+                          value: string | number | (string | number)[]
+                        ) => {
+                          const formatNumber = (val: string | number) => {
+                            const num =
+                              typeof val === "number" ? val : Number(val);
+                            return isNaN(num)
+                              ? val
+                              : new Intl.NumberFormat("vi-VN").format(num);
+                          };
+
+                          if (Array.isArray(value)) {
+                            return value.map(formatNumber).join(" - ");
+                          }
+
+                          return formatNumber(value);
+                        }}
+                        labelFormatter={(value) => `${value}`}
+                        contentStyle={{
+                          backgroundColor: "rgba(255, 255, 255, 0.8)",
+                          borderRadius: "8px",
+                          border: "none",
+                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                        }}
+                      />
+
+                      <Bar dataKey="value" radius={[8, 8, 0, 0]}>
+                        {statsData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="flex justify-between items-center mt-2 pt-2 border-t border-border/30">
+                  {statsData.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <span
+                        className={`h-3 w-3 rounded-full`}
+                        style={{ backgroundColor: item.color }}
+                      ></span>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-muted-foreground">
+                          {item.name}
+                        </span>
+                        <span className="font-bold text-sm">
+                          {item.name === "Bài viết"
+                            ? item.value
+                            : new Intl.NumberFormat("vi-VN").format(
+                                item.value
+                              ) + "+"}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Popular Topics Card with Pie Chart */}
+            <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-3">
+              <CardHeader>
+                <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
+                  Chủ đề phổ biến
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={topicsData.slice(0, 5)}
+                        dataKey="count"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        innerRadius={40}
+                        activeIndex={activePieIndex}
+                        onMouseEnter={onPieEnter}
+                        paddingAngle={2}
+                        label={({ name, percent }) =>
+                          `${name} ${(percent * 100).toFixed(0)}%`
+                        }
+                        labelLine={false}
                       >
-                        <Link
-                          href={`/tag/${tag.toLowerCase().replace(/\./g, "")}`}
-                        >
-                          {tag}
-                        </Link>
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+                        {topicsData.slice(0, 5).map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value) => `${value} bài viết`}
+                        contentStyle={{
+                          backgroundColor: "rgba(255, 255, 255, 0.8)",
+                          borderRadius: "8px",
+                          border: "none",
+                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
 
-              <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-3">
-                <CardHeader>
-                  <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
-                    Thống kê blog
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-4">
-                    <li className="flex items-center gap-4 pb-3 border-b border-border/20 last:border-0 last:pb-0 slide-in stagger-1">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Newspaper size={20} className="pulse-gentle" />
-                      </span>
-                      <div>
-                        <span className="block text-lg font-bold text-primary">
-                          {posts.length}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          Bài viết
-                        </span>
-                      </div>
-                    </li>
-                    <li className="flex items-center gap-4 pb-3 border-b border-border/20 last:border-0 last:pb-0 slide-in stagger-2">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <Eye size={20} className="pulse-gentle" />
-                      </span>
-                      <div>
-                        <span className="block text-lg font-bold text-primary">
-                          10.5k+
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          Lượt xem
-                        </span>
-                      </div>
-                    </li>
-                    <li className="flex items-center gap-4 slide-in stagger-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <MessageSquare size={20} className="pulse-gentle" />
-                      </span>
-                      <div>
-                        <span className="block text-lg font-bold text-primary">
-                          230+
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          Bình luận
-                        </span>
-                      </div>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {topicsData.map((tag, idx) => (
+                    <Badge
+                      key={tag.name}
+                      variant="secondary"
+                      className={`bg-primary/10 hover:bg-primary text-primary transition-colors duration-200 hover:translate-y-[-2px] scale-in stagger-${
+                        (idx % 5) + 1
+                      }`}
+                      asChild
+                    >
+                      <Link
+                        href={`/tag/${tag.name
+                          .toLowerCase()
+                          .replace(/\./g, "")}`}
+                      >
+                        {tag.name}
+                      </Link>
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
-            {/* New Featured Author Card */}
+            {/* Featured Author Card with Chart */}
             <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-4 bg-gradient-to-br from-background to-primary/5">
               <CardHeader className="pb-2">
                 <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
@@ -454,6 +531,7 @@ export default function Home() {
                   Chuyên gia lỏd về Next.js và React với đang đi thực tập và
                   chưa ra trường.
                 </p>
+
                 <div className="flex justify-between items-center pt-2 border-t border-border/20">
                   <div className="flex space-x-3">
                     <span className="text-xs text-muted-foreground">
