@@ -18,7 +18,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, FileText, Bookmark, Settings as SettingsIcon, LogOut, ChevronRight } from "lucide-react";
+import {
+  User,
+  FileText,
+  Bookmark,
+  Settings as SettingsIcon,
+  LogOut,
+  ChevronRight,
+} from "lucide-react";
 
 interface SettingsProps {
   sidebarExpanded?: boolean;
@@ -30,17 +37,19 @@ export default function Setting({ sidebarExpanded = true }: SettingsProps) {
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     // Use system preference as default if no theme is saved
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     const storedTheme = localStorage.getItem("theme");
-    const initialTheme = 
-      storedTheme === "dark" 
-        ? "dark" 
-        : storedTheme === "light" 
-        ? "light" 
-        : prefersDark 
-        ? "dark" 
+    const initialTheme =
+      storedTheme === "dark"
+        ? "dark"
+        : storedTheme === "light"
+        ? "light"
+        : prefersDark
+        ? "dark"
         : "light";
 
     setTheme(initialTheme);
@@ -85,9 +94,7 @@ export default function Setting({ sidebarExpanded = true }: SettingsProps) {
                 <Sun className={`h-5 w-5 ${sidebarExpanded ? "mr-3" : ""}`} />
               )}
               {sidebarExpanded && (
-                <span>
-                  {theme === "light" ? "Chế độ tối" : "Chế độ sáng"}
-                </span>
+                <span>{theme === "light" ? "Chế độ tối" : "Chế độ sáng"}</span>
               )}
             </Button>
           </TooltipTrigger>

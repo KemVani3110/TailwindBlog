@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Author {
+  followers?: number;
+  role: string;
   bio: string;
   articles: number;
   id: string;
@@ -7,6 +10,9 @@ export interface Author {
 }
 
 export interface Post {
+  views?: number;
+  trending?: any;
+  image: string;
   id: string;
   title: string;
   slug: string;
@@ -14,8 +20,8 @@ export interface Post {
   content: string;
   featuredImage: string;
   date: string;
-  readTime: string; // Changed from number to string to match your PostCard usage
+  readTime: string;
   author: Author;
-  category?: string;  // Made optional since it's not in your data
+  category?: string;
   tags: string[];
 }

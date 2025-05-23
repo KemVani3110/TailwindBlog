@@ -303,7 +303,6 @@
   @apply text-amber-600 dark:text-amber-400 font-medium text-sm;
 }
 
-/* Tối ưu cho văn bản tiếng Việt */
 .text-vn {
   letter-spacing: -0.01em;
   word-spacing: 0.05em;

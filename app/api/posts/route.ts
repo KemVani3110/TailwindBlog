@@ -33,7 +33,10 @@ const posts: Post[] = [
         readTime: '5 phút',
         author: {
             name: 'Nguyễn Văn A',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Web Development',
         tags: ['Next.js', 'React', 'Frontend']
@@ -65,7 +68,10 @@ const posts: Post[] = [
         readTime: '7 phút',
         author: {
             name: 'Nguyễn Văn A',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'CSS',
         tags: ['Next.js', 'Tailwind CSS', 'CSS']
@@ -97,7 +103,10 @@ const posts: Post[] = [
         readTime: '8 phút',
         author: {
             name: 'Trần Văn B',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'React',
         tags: ['Next.js', 'React', 'Server Components']
@@ -129,7 +138,10 @@ const posts: Post[] = [
         readTime: '6 phút',
         author: {
             name: 'Lê Văn C',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Backend',
         tags: ['Next.js', 'API', 'Backend']
@@ -161,7 +173,10 @@ const posts: Post[] = [
         readTime: '5 phút',
         author: {
             name: 'Phạm Văn D',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Deployment',
         tags: ['Next.js', 'Vercel', 'Deployment']
@@ -193,7 +208,10 @@ const posts: Post[] = [
         readTime: '9 phút',
         author: {
             name: 'Hoàng Văn E',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'SEO',
         tags: ['Next.js', 'SEO', 'Marketing']
@@ -227,7 +245,10 @@ const posts: Post[] = [
         readTime: '6 phút',
         author: {
             name: 'Nguyễn Thị F',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Performance',
         tags: ['Next.js', 'Image', 'Performance']
@@ -259,7 +280,10 @@ const posts: Post[] = [
         readTime: '5 phút',
         author: {
             name: 'Lê Văn G',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'SEO',
         tags: ['Next.js', 'Sitemap', 'SEO']
@@ -293,7 +317,10 @@ const posts: Post[] = [
         readTime: '7 phút',
         author: {
             name: 'Phạm Thị H',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Advanced',
         tags: ['Next.js', 'Middleware', 'Routing']
@@ -325,7 +352,10 @@ const posts: Post[] = [
         readTime: '4 phút',
         author: {
             name: 'Trần Văn I',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Analytics',
         tags: ['Next.js', 'Google Analytics', 'Tracking']
@@ -357,7 +387,10 @@ const posts: Post[] = [
         readTime: '5 phút',
         author: {
             name: 'Nguyễn Văn J',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'UX/UI',
         tags: ['Next.js', '404 Page', 'UX']
@@ -389,7 +422,10 @@ const posts: Post[] = [
         readTime: '6 phút',
         author: {
             name: 'Lê Thị K',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'State Management',
         tags: ['Next.js', 'Zustand', 'React']
@@ -420,7 +456,10 @@ const posts: Post[] = [
         readTime: '8 phút',
         author: {
             name: 'Trịnh Văn L',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Performance',
         tags: ['Next.js', 'SSR', 'SSG', 'ISR']
@@ -450,7 +489,10 @@ const posts: Post[] = [
         readTime: '5 phút',
         author: {
             name: 'Đỗ Văn M',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'UI',
         tags: ['Next.js', 'FontAwesome', 'Icons']
@@ -480,7 +522,10 @@ const posts: Post[] = [
         readTime: '4 phút',
         author: {
             name: 'Phan Thị N',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Config',
         tags: ['Next.js', '.env', 'Environment']
@@ -512,7 +557,10 @@ const posts: Post[] = [
         readTime: '7 phút',
         author: {
             name: 'Ngô Văn O',
-            avatar: '/ava1.png'
+            avatar: '/ava1.png',
+            bio: '',
+            articles: 0,
+            id: ''
         },
         category: 'Performance',
         tags: ['Next.js', 'Lighthouse', 'Web Vitals']

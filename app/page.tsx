@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -17,7 +16,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Pagination,
@@ -28,15 +27,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
 import PostCard from "@//components/layout/PostCard";
 import BackToTop from "@//components/layout/BackToTop";
 import { Post } from "@/types/post";
@@ -49,30 +39,6 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [mounted, setMounted] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
-
-  // Data for statistics chart
-  const statsData = [
-    { name: "Bài viết", value: posts.length, color: "#0ea5e9" },
-    { name: "Lượt xem", value: 10500, color: "#8b5cf6" },
-    { name: "Bình luận", value: 230, color: "#f43f5e" },
-  ];
-
-  // Data for popular topics
-  const topicsData = [
-    { name: "Next.js", count: 12, color: "#000000" },
-    { name: "React", count: 10, color: "#61dafb" },
-    { name: "JS", count: 8, color: "#f7df1e" },
-    { name: "TS", count: 6, color: "#3178c6" },
-    { name: "CSS", count: 5, color: "#264de4" },
-    { name: "Web Dev", count: 4, color: "#4caf50" },
-    { name: "Performance", count: 3, color: "#ff9800" },
-    { name: "Design", count: 2, color: "#e91e63" },
-  ];
-
-  const [activePieIndex, setActivePieIndex] = useState(0);
-  const onPieEnter = (_: any, index: number) => {
-    setActivePieIndex(index);
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -300,262 +266,226 @@ export default function Home() {
       </section>
 
       {/* Featured Posts Section */}
-
-      <section className="py-16 scroll-reveal">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold tracking-tight relative after:content-[''] after:absolute after:left-0 after:bottom-[-10px] after:w-12 after:h-1 after:bg-primary hover:after:w-24 after:transition-all after:duration-300 text-vn-heading">
-            Bài viết nổi bật
-          </h2>
+      <section className="py-20 scroll-reveal">
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <h2 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary via-purple-600 to-secondary bg-clip-text text-transparent mb-2">
+              Bài viết nổi bật
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Những nội dung được yêu thích nhất tuần này
+            </p>
+          </div>
           <Link
             href="/blogs"
-            className="text-primary font-medium hover:underline transition-colors px-2 py-1 rounded hover:bg-primary/10 pulse-gentle group flex items-center"
+            className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 border border-primary/20 hover:border-primary/30"
           >
-            Xem tất cả{" "}
-            <ChevronRight className="inline h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <span className="font-medium text-primary">Xem tất cả</span>
+            <ChevronRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        {/* Featured Posts Filter */}
-        <div className="mb-6 pb-2 overflow-x-auto hide-scrollbar">
-          <div className="flex space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-4 text-sm font-medium shadow-sm transition-all whitespace-nowrap"
-            >
-              Tất cả
-            </Button>
-            {["Next.js", "React", "JavaScript", "TypeScript", "CSS"].map(
-              (category) => (
+        {/* Dynamic Category Filter */}
+        <div className="mb-12">
+          <div className="flex items-center gap-6 overflow-x-auto pb-4 hide-scrollbar">
+            <div className="flex items-center gap-2 whitespace-nowrap">
+              <div className="w-1 h-6 bg-gradient-to-b from-primary to-secondary rounded-full"></div>
+              <span className="text-sm font-medium text-muted-foreground">
+                Lọc theo:
+              </span>
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary text-white border-0 rounded-full px-6 py-2 text-sm font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              >
+                <span className="relative z-10">Tất cả</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90 opacity-0 hover:opacity-100 transition-opacity"></div>
+              </Button>
+
+              {[
+                "Next.js",
+                "React",
+                "JavaScript",
+                "TypeScript",
+                "Web Design",
+              ].map((category, idx) => (
                 <Button
                   key={category}
                   variant="outline"
                   size="sm"
-                  className="rounded-full px-4 text-sm font-medium border-primary/20 text-foreground hover:bg-primary hover:text-primary-foreground transition-all whitespace-nowrap"
+                  className={`relative overflow-hidden rounded-full px-6 py-2 text-sm font-medium border-2 border-primary/20 text-foreground hover:text-white hover:border-primary transition-all duration-300 hover:scale-105 whitespace-nowrap hover:shadow-lg
+              ${
+                idx === 1
+                  ? "hover:bg-blue-500"
+                  : idx === 2
+                  ? "hover:bg-yellow-500"
+                  : idx === 3
+                  ? "hover:bg-blue-600"
+                  : "hover:bg-primary"
+              }`}
                 >
-                  {category}
+                  <span className="relative z-10">{category}</span>
                 </Button>
-              )
-            )}
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
-            {featuredPosts.map((post, index) => (
-              <div
-                key={post.id}
-                className={`${
-                  index === 0 ? "md:col-span-2 relative" : ""
-                } transition-transform duration-300 hover:translate-y-[-5px] scale-in ${
-                  index === 0
-                    ? "stagger-1"
-                    : index === 1
-                    ? "stagger-2"
-                    : "stagger-3"
-                }`}
-              >
-                <PostCard post={post} />
-              </div>
-            ))}
-          </div>
+        {/* Main Featured Posts Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 mb-12">
+          {/* Hero Featured Post */}
+          <div className="xl:col-span-8">
+            <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/5 to-secondary/5 p-1 hover:scale-[1.02] transition-all duration-500">
+              <div className="relative overflow-hidden rounded-3xl bg-background border border-primary/10 shadow-2xl">
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <Image
+                    src={featuredPosts[0]?.image || "/nextjs.png"}
+                    alt={featuredPosts[0]?.title || "Featured post"}
+                    fill
+                    className="object-cover transition-all duration-700 group-hover:scale-110"
+                  />
 
-          <div className="flex flex-col gap-8">
-            {/* Statistics Chart Card */}
-            <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-2">
-              <CardHeader>
-                <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
-                  Thống kê blog
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={statsData}
-                      margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
-                    >
-                      <Tooltip
-                        formatter={(
-                          value: string | number | (string | number)[]
-                        ) => {
-                          const formatNumber = (val: string | number) => {
-                            const num =
-                              typeof val === "number" ? val : Number(val);
-                            return isNaN(num)
-                              ? val
-                              : new Intl.NumberFormat("vi-VN").format(num);
-                          };
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-                          if (Array.isArray(value)) {
-                            return value.map(formatNumber).join(" - ");
-                          }
+                  {/* Floating Badge */}
+                  <div className="absolute top-6 left-6">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-black/20">
+                      <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                      <span className="text-black text-sm font-medium">
+                        Trending
+                      </span>
+                    </div>
+                  </div>
 
-                          return formatNumber(value);
-                        }}
-                        labelFormatter={(value) => `${value}`}
-                        contentStyle={{
-                          backgroundColor: "rgba(255, 255, 255, 0.8)",
-                          borderRadius: "8px",
-                          border: "none",
-                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                        }}
-                      />
+                  {/* Reading Time */}
+                  <div className="absolute top-6 right-6">
+                    <div className="px-3 py-1 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
+                      <span className="text-white text-xs">5 phút đọc</span>
+                    </div>
+                  </div>
 
-                      <Bar dataKey="value" radius={[8, 8, 0, 0]}>
-                        {statsData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="flex justify-between items-center mt-2 pt-2 border-t border-border/30">
-                  {statsData.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <span
-                        className={`h-3 w-3 rounded-full`}
-                        style={{ backgroundColor: item.color }}
-                      ></span>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-muted-foreground">
-                          {item.name}
-                        </span>
-                        <span className="font-bold text-sm">
-                          {item.name === "Bài viết"
-                            ? item.value
-                            : new Intl.NumberFormat("vi-VN").format(
-                                item.value
-                              ) + "+"}
+                  {/* Content Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="max-w-2xl">
+                      {/* Category Tag */}
+                      <div className="mb-4">
+                        <span className="inline-flex items-center px-3 py-1 bg-primary/90 text-primary-foreground text-xs font-semibold rounded-full">
+                          Next.js
                         </span>
                       </div>
+
+                      <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 line-clamp-2 group-hover:text-primary/90 transition-colors">
+                        {featuredPosts[0]?.title ||
+                          "Hướng dẫn chi tiết về Next.js 14 và App Router"}
+                      </h3>
+
+                      <p className="text-white/90 text-lg mb-6 line-clamp-2">
+                        {featuredPosts[0]?.excerpt ||
+                          "Khám phá những tính năng mới nhất của Next.js 14 và cách sử dụng App Router một cách hiệu quả trong dự án thực tế."}
+                      </p>
+
+                      {/* Author Info */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="relative">
+                            <div className="h-12 w-12 rounded-full overflow-hidden border-3 border-white/30 shadow-lg">
+                              <Image
+                                src={
+                                  featuredPosts[0]?.author?.avatar ||
+                                  "/ava1.png"
+                                }
+                                alt="Author"
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                          </div>
+
+                          <div>
+                            <p className="text-white font-semibold">
+                              {featuredPosts[0]?.author?.name || "Minh Khôi"}
+                            </p>
+                            <p className="text-white/70 text-sm">
+                              {featuredPosts[0]?.date || "2 ngày trước"} • 10.5K
+                              lượt xem
+                            </p>
+                          </div>
+                        </div>
+
+                        <Button
+                          size="lg"
+                          className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border border-white/20 rounded-full px-6 hover:scale-105 transition-all duration-300"
+                        >
+                          Đọc ngay
+                        </Button>
+                      </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+          </div>
 
-            {/* Popular Topics Card with Pie Chart */}
-            <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-3">
-              <CardHeader>
-                <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
-                  Chủ đề phổ biến
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={topicsData.slice(0, 5)}
-                        dataKey="count"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        innerRadius={40}
-                        activeIndex={activePieIndex}
-                        onMouseEnter={onPieEnter}
-                        paddingAngle={2}
-                        label={({ name, percent }) =>
-                          `${name} ${(percent * 100).toFixed(0)}%`
-                        }
-                        labelLine={false}
-                      >
-                        {topicsData.slice(0, 5).map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        formatter={(value) => `${value} bài viết`}
-                        contentStyle={{
-                          backgroundColor: "rgba(255, 255, 255, 0.8)",
-                          borderRadius: "8px",
-                          border: "none",
-                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                        }}
+          {/* Side Featured Posts */}
+          <div className="xl:col-span-4 space-y-6">
+            {featuredPosts.slice(1, 4).map((post, index) => (
+              <div
+                key={post.id}
+                className={`group relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-xl scale-in stagger-${
+                  index + 2
+                }`}
+              >
+                <Card className="border-0 shadow-lg overflow-hidden bg-gradient-to-br from-background to-accent/5 ">
+                  <div className="flex gap-4 p-6">
+                    <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                      <Image
+                        src={post.image || "/nextjs.png"}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                    </div>
 
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {topicsData.map((tag, idx) => (
-                    <Badge
-                      key={tag.name}
-                      variant="secondary"
-                      className={`bg-primary/10 hover:bg-primary text-primary transition-colors duration-200 hover:translate-y-[-2px] scale-in stagger-${
-                        (idx % 5) + 1
-                      }`}
-                      asChild
-                    >
-                      <Link
-                        href={`/tag/${tag.name
-                          .toLowerCase()
-                          .replace(/\./g, "")}`}
-                      >
-                        {tag.name}
-                      </Link>
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-2">
+                        <Badge variant="secondary" className="text-xs">
+                          React
+                        </Badge>
+                      </div>
 
-            {/* Featured Author Card with Chart */}
-            <Card className="border-border shadow-md hover:shadow-lg hover:translate-y-[-5px] transition-all duration-300 scale-in stagger-4 bg-gradient-to-br from-background to-primary/5">
-              <CardHeader className="pb-2">
-                <CardTitle className="relative after:content-[''] after:absolute after:left-0 after:bottom-[-6px] after:w-10 after:h-1 after:bg-primary">
-                  Tác giả nổi bật
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 flex items-center gap-4 slide-in">
-                  <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-primary float ring-4 ring-primary/10">
-                    <Image
-                      src="/ava1.png"
-                      alt="Author avatar"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold">Minh Khôi</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Web Developer & Technical Writer
-                    </p>
-                  </div>
-                </div>
-                <p className="mb-4 text-sm text-foreground">
-                  Chuyên gia lỏd về Next.js và React với đang đi thực tập và
-                  chưa ra trường.
-                </p>
+                      <h4 className="font-bold text-foreground line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+                        {post.title || `Bài viết số ${index + 2}`}
+                      </h4>
 
-                <div className="flex justify-between items-center pt-2 border-t border-border/20">
-                  <div className="flex space-x-3">
-                    <span className="text-xs text-muted-foreground">
-                      12 bài viết
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      5.2k lượt xem
-                    </span>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <div className="w-5 h-5 rounded-full overflow-hidden">
+                            <Image
+                              src={post.author?.avatar || "/ava1.png"}
+                              alt="Author"
+                              width={20}
+                              height={20}
+                              className="object-cover"
+                            />
+                          </div>
+                          <span>Minh Khôi</span>
+                        </div>
+                        <span>•</span>
+                        <span>{post.date || "1 tuần trước"}</span>
+                        <span>•</span>
+                        <span>3 phút đọc</span>
+                      </div>
+                    </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-primary hover:bg-primary/10 p-0 h-auto"
-                  >
-                    <Link
-                      href="/authors/minh-khoi"
-                      className="flex items-center"
-                    >
-                      Xem hồ sơ <ChevronRight size={14} />
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </section>

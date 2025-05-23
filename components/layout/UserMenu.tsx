@@ -10,7 +10,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, FileText, Bookmark, Settings, LogOut, ChevronRight } from "lucide-react";
+import {
+  User,
+  FileText,
+  Bookmark,
+  Settings,
+  LogOut,
+  ChevronRight,
+} from "lucide-react";
 
 interface UserMenuProps {
   isSidebar?: boolean;
@@ -20,7 +27,7 @@ export default function UserMenu({ isSidebar = false }: UserMenuProps) {
   const userInfo = {
     name: "Minh Khôi",
     email: "chuminhkhoi3110@gmail.com",
-    initials: "MK"
+    initials: "MK",
   };
 
   if (isSidebar) {

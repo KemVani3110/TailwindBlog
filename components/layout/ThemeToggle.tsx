@@ -9,23 +9,28 @@ interface ThemeToggleProps {
   isExpanded?: boolean;
 }
 
-export default function ThemeToggle({ isSidebar = false, isExpanded = true }: ThemeToggleProps) {
+export default function ThemeToggle({
+  isSidebar = false,
+  isExpanded = true,
+}: ThemeToggleProps) {
   const [theme, setTheme] = useState("light");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     // Use system preference as default if no theme is saved
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     const storedTheme = localStorage.getItem("theme");
-    const initialTheme = 
-      storedTheme === "dark" 
-        ? "dark" 
-        : storedTheme === "light" 
-        ? "light" 
-        : prefersDark 
-        ? "dark" 
+    const initialTheme =
+      storedTheme === "dark"
+        ? "dark"
+        : storedTheme === "light"
+        ? "light"
+        : prefersDark
+        ? "dark"
         : "light";
 
     setTheme(initialTheme);
@@ -68,20 +73,14 @@ export default function ThemeToggle({ isSidebar = false, isExpanded = true }: Th
           <Sun className={`h-5 w-5 ${isExpanded ? "mr-3" : ""}`} />
         )}
         {isExpanded && (
-          <span>
-            {theme === "light" ? "Chế độ tối" : "Chế độ sáng"}
-          </span>
+          <span>{theme === "light" ? "Chế độ tối" : "Chế độ sáng"}</span>
         )}
       </Button>
     );
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={toggleTheme}
-    >
+    <Button variant="ghost" size="icon" onClick={toggleTheme}>
       {theme === "light" ? (
         <Moon className="h-5 w-5" />
       ) : (

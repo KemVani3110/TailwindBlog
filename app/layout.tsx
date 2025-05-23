@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import LoadingProvider from "@/app/context/LoadingContext";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,17 +23,19 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <LoadingProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex-1 pt-16 md:pl-16 transition-all duration-300">
-                {children}
-              </main>
-              <Footer />
-            </div>
-          </LoadingProvider>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <LoadingProvider>
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <main className="flex-1 pt-16 md:pl-16 transition-all duration-300">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+            </LoadingProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
